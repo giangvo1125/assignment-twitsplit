@@ -47,7 +47,7 @@ class FormBuild extends Helper {
 			submitButton = document.createElement('div')
 
 			input.className= 'input'
-			input.innerHTML = `<input type="text" class="form-control" id="${this.inputId}" placeholder="Enter message..."/>`
+			input.innerHTML = `<input type="text" class="form-control input-form" id="${this.inputId}" placeholder="Enter message..."/>`
 
 			submitButton.className = 'button'
 			submitButton.innerHTML = `<button class="submit" id="${this.submitId}">send</button>`
@@ -81,27 +81,31 @@ class FormBuild extends Helper {
 	}
 
 	onClickSubmit() {
-		this.handlePreventAction()
-		.then(() => {
-			let { value } = document.getElementById(this.inputId)
-			super.onCheckValidate(value, this.validate)
-			.then((messages) => {
-				messages.forEach(msg => {
-					let li = document.createElement('li'), 
-					list = super.getPartItem(this.id, 'list')
-					li.append(msg)
-					list.appendChild(li)
+		return new Promise((resolve, reject) => {
+			this.handlePreventAction()
+			.then(() => {
+				let { value } = document.getElementById(this.inputId)
+				super.onCheckValidate(value, this.validate)
+				.then((messages) => {
+					messages.forEach(msg => {
+						let li = document.createElement('li'), 
+						list = super.getPartItem(this.id, 'list')
+						li.append(msg)
+						list.appendChild(li)
+					})
+					document.getElementById(this.inputId).value = ''
+					this.handlePreventAction(true)
+					resolve()
+				}, err => {
+					if(err) {
+						this.toggleTooltip(true)
+						setTimeout(() => {
+							this.toggleTooltip(false)
+							this.handlePreventAction(true)
+							// reject()
+						}, 3000)
+					}
 				})
-				document.getElementById(this.inputId).value = ''
-				this.handlePreventAction(true)
-			}, err => {
-				if(err) {
-					this.toggleTooltip(true)
-					setTimeout(() => {
-						this.toggleTooltip(false)
-						this.handlePreventAction(true)
-					}, 3000)
-				}
 			})
 		})
 	}
@@ -125,17 +129,20 @@ class FormBuild extends Helper {
 
 	init() {
 		try {
-			this.generateBody()
-			.then(() => {
-				return this.generateInputChat()
-			})
-			.then(() => {
-				let submitBtn = document.getElementById(this.submitId)
-				let input = document.getElementById(this.inputId)
-				if(submitBtn) {
-					submitBtn.addEventListener('click', this.onClickSubmit.bind(this))
-					input.addEventListener('keyup', this.onEnterInput.bind(this))
-				}
+			return new Promise((resolve, reject) => {
+				this.generateBody()
+				.then(() => {
+					return this.generateInputChat()
+				})
+				.then(() => {
+					let submitBtn = document.getElementById(this.submitId)
+					let input = document.getElementById(this.inputId)
+					if(submitBtn) {
+						submitBtn.addEventListener('click', this.onClickSubmit.bind(this))
+						input.addEventListener('keyup', this.onEnterInput.bind(this))
+						resolve()
+					}
+				})
 			})
 		}
 		catch(e) {
@@ -143,3 +150,5 @@ class FormBuild extends Helper {
 		}
 	}
 }
+
+// module.exports = FormBuild

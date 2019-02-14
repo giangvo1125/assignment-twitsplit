@@ -6,17 +6,19 @@ class Helper {
 			temp = temp.substring(45)
 			arrayMsg.push(substr)
 		}
-		for(let i = 0; i < arrayMsg.length; i++) {
-			let dot = `${i + 1}/${arrayMsg.length}`
-			arrayMsg[i] = `${dot} ${arrayMsg[i]}`
+		if(arrayMsg.length > 1) {
+			for(let i = 0; i < arrayMsg.length; i++) {
+				let dot = `${i + 1}/${arrayMsg.length}`
+				arrayMsg[i] = `${dot} ${arrayMsg[i]}`
+			}
 		}
 		return arrayMsg
 	}
 
 	countSpace(string = '', minChar) {
-		let count = string.match(/\s/g).length, 
+		let count = string.match(/\s/g) ? string.match(/\s/g).length : null, 
 			stringLength = string.length
-		if(stringLength - count > minChar) {
+		if(count != null && stringLength - count > minChar) {
 			return false
 		}
 		return true
@@ -34,7 +36,6 @@ class Helper {
 						let arrayMsg = this.splitMessage(value)
 						let isValid = true
 						arrayMsg.forEach(msg => {
-							let count = this.countSpace(msg, condition.minChar)
 							if(!msg) {
 								isValid = false
 							}
@@ -83,3 +84,5 @@ class Helper {
 		}
 	}
 }
+
+// module.exports = Helper
