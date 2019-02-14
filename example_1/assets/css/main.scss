@@ -1,0 +1,99 @@
+$border: #ddd;
+$bg: #aaa;
+$height: 40px;
+$text: #545454;
+$primary: #00cc7c;
+$space: 20px;
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+body {
+	font-size: 15px;
+	color: $text;
+	background-color: $bg;
+}
+.form-control {
+	border: none;
+	display: block;
+	width: 100%;
+	height: $height;
+	padding: 0 10px;
+	background-color: #efefef;
+	font-size: 15px;
+	&:focus {
+		outline: none;
+	}
+	&.error {
+		background-color: rgba(red,.25);
+		color: red;
+	}
+}
+.tooltip {
+	display: block;
+	padding: 2px 10px;
+	background-color: red;
+	color: white;
+}
+.list {
+	margin-left: initial;
+	li {
+		display: block;
+		padding: 10px 0px;
+		border-bottom: 1px dashed $border;
+	}
+	.error {
+		color: red;
+	}
+}
+.form {
+	display: block;
+	width: 400px;
+	background-color: white;
+	margin: 10% auto;
+	box-shadow: 5px 5px 0px rgba(white,.2),
+				10px 10px 0px rgba(white,.2),
+				15px 15px 0px rgba(white,.2);
+	.form__body {
+		padding: 20px;
+		height: 50vh;
+		overflow-x: hidden; 
+		overflow-y: auto;
+	}
+	.form__footer {
+		display: flex;
+		margin-top: 20px;
+		.input {
+			flex: 1;
+		}
+		.button {
+			position: relative;
+			.tooltip {
+				position: absolute;
+				top: calc(100% + 0px);
+				right: 0px;
+			}
+		}
+		.submit {
+			border: none;
+			background-color: none;
+			width: 80px;
+			height: 100%;
+			text-align: center;
+			border-left: none;
+			background-color: #ccc;
+			color: #aaa;
+			text-transform: uppercase;
+			&:hover {
+				opacity: .9;
+				outline: none;
+				cursor: pointer;
+			}
+			&.active {
+				background-color: $primary;
+				color: white;
+			}
+		}
+	}
+}

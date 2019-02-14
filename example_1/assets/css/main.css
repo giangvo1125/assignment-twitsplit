@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0; }
+
+body {
+  font-size: 15px;
+  color: #545454;
+  background-color: #aaa; }
+
+.form-control {
+  border: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  background-color: #efefef;
+  font-size: 15px; }
+  .form-control:focus {
+    outline: none; }
+  .form-control.error {
+    background-color: rgba(255, 0, 0, 0.25);
+    color: red; }
+
+.tooltip {
+  display: block;
+  padding: 2px 10px;
+  background-color: red;
+  color: white; }
+
+.list {
+  margin-left: initial; }
+  .list li {
+    display: block;
+    padding: 10px 0px;
+    border-bottom: 1px dashed #ddd; }
+  .list .error {
+    color: red; }
+
+.form {
+  display: block;
+  width: 400px;
+  background-color: white;
+  margin: 10% auto;
+  box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.2), 10px 10px 0px rgba(255, 255, 255, 0.2), 15px 15px 0px rgba(255, 255, 255, 0.2); }
+  .form .form__body {
+    padding: 20px;
+    height: 50vh;
+    overflow-x: hidden;
+    overflow-y: auto; }
+  .form .form__footer {
+    display: flex;
+    margin-top: 20px; }
+    .form .form__footer .input {
+      flex: 1; }
+    .form .form__footer .button {
+      position: relative; }
+      .form .form__footer .button .tooltip {
+        position: absolute;
+        top: calc(100% + 0px);
+        right: 0px; }
+    .form .form__footer .submit {
+      border: none;
+      background-color: none;
+      width: 80px;
+      height: 100%;
+      text-align: center;
+      border-left: none;
+      background-color: #ccc;
+      color: #aaa;
+      text-transform: uppercase; }
+      .form .form__footer .submit:hover {
+        opacity: .9;
+        outline: none;
+        cursor: pointer; }
+      .form .form__footer .submit.active {
+        background-color: #00cc7c;
+        color: white; }
+
+/*# sourceMappingURL=main.css.map */
