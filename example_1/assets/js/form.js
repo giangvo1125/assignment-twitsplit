@@ -5,6 +5,21 @@ class FormBuild {
 		this.inputId = props.input_id ? props.input_id : 'id_text'
 		this.submitId = props.submit_id ? props.submit_id : 'id_submit'
 		this.minChar = 50
+		this.isLoadingSubmit = false
+	}
+
+	handlePreventAction(isSetDefault = false) {
+		if(!isSetDefault) {
+			return new Promise((resolve, reject) => {
+				if(!this.isLoadingSubmit) {
+					this.isLoadingSubmit = true
+					resolve()
+				}
+			})
+		}
+		else {
+			this.isLoadingSubmit = false
+		}
 	}
 
 	generateBody() {
@@ -34,7 +49,6 @@ class FormBuild {
 			submitButton.className = 'button'
 			submitButton.innerHTML = `<button class="submit active" id="${this.submitId}">send</button>`
 
-			// <span class="tooltip">tooltip</span>
 		return new Promise((resolve, reject) => {
 			footer.appendChild(input)
 			footer.appendChild(submitButton)
@@ -122,20 +136,52 @@ class FormBuild {
 		})
 	}
 
+	checkExistElement(element) {
+		return (typeof element !== 'undefined' && element !== null)
+	}
+
+	toggleTooltip(isShow = false) {
+		let footer = this.getPartItem('footer'), 
+			submitButton = footer.getElementsByClassName("button")[0], 
+			tooltip = ''
+		if(this.checkExistElement(submitButton)) {
+			if(!isShow) {
+				tooltip = submitButton.getElementsByClassName('tooltip')[0]
+				if(this.checkExistElement(tooltip)) {
+					tooltip.parentNode.removeChild(tooltip)
+				}
+			}
+			else {
+				tooltip = document.createElement('span')
+				tooltip.className = 'tooltip'
+				tooltip.innerHTML = 'Error'
+				submitButton.appendChild(tooltip)
+			}
+		}
+
+	}
+
 	onClickSubmit() {
-		let { value } = document.getElementById(this.inputId)
-		this.onCheckValidate(value)
-		.then((messages) => {
-			messages.forEach(msg => {
-				let li = document.createElement('li'), 
-				list = this.getPartItem('list')
-				li.append(msg)
-				list.appendChild(li)
+		this.handlePreventAction()
+		.then(() => {
+			let { value } = document.getElementById(this.inputId)
+			this.onCheckValidate(value)
+			.then((messages) => {
+				messages.forEach(msg => {
+					let li = document.createElement('li'), 
+					list = this.getPartItem('list')
+					li.append(msg)
+					list.appendChild(li)
+				})
+				document.getElementById(this.inputId).value = ''
+				this.handlePreventAction(true)
+			}, err => {
+				this.toggleTooltip(true)
+				setTimeout(() => {
+					this.toggleTooltip(false)
+					this.handlePreventAction(true)
+				}, 3000)
 			})
-			document.getElementById(this.inputId).value = ''
-		}, err => {
-			console.log('show tooltip')
-			console.log('err ',err)
 		})
 	}
 
