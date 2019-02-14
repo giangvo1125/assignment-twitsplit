@@ -14,7 +14,8 @@ app.use(express.static(__dirname + '/assets'))
 
 app.get('/favicon.ico', (req, res) => res.status(204))
 
-app.set('view engine', 'ejs')
+app.set('views', __dirname + '/views')
+app.engine('html', require('ejs').renderFile);
 
 app.set('port', config.port)
 
