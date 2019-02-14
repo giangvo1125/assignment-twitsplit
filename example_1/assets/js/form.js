@@ -1,10 +1,13 @@
-class FormBuild {
+class FormBuild extends Helper {
 	constructor(props) {
+		super(props)
 		this.id = props.id ? props.id : 'form'
 		this.value = props.value ? props.value : []
 		this.inputId = props.input_id ? props.input_id : 'id_text'
 		this.submitId = props.submit_id ? props.submit_id : 'id_submit'
-		this.minChar = 50
+		this.validate = {
+			minChar: 50
+		}
 		this.isLoadingSubmit = false
 	}
 
@@ -39,7 +42,7 @@ class FormBuild {
 	}
 
 	generateInputChat() {
-		let footer = this.getPartItem('footer'), 
+		let footer = super.getPartItem(this.id, 'footer'), 
 			input = document.createElement('div'), 
 			submitButton = document.createElement('div')
 
@@ -56,98 +59,14 @@ class FormBuild {
 		})
 	}
 
-	getPartItem(path) {
-		let form = document.getElementById(this.id), 
-			body = form.getElementsByClassName("form__body")[0], 
-			footer = form.getElementsByClassName("form__footer")[0]
-		switch(path) {
-			case 'list':
-				return body.getElementsByClassName("list")[0]
-			break
-			case 'body':
-				return body
-			break
-			case 'footer':
-				return footer
-			break
-			default:
-				return form 
-			break
-		}
-	}
-
-	countSpace(string = '') {
-		let count = string.match(/\s/g).length, 
-			stringLength = string.length
-		if(stringLength - count > this.minChar) {
-			return false
-		}
-		return true
-	}
-
-	splitMessage(string) {
-		let temp = string, arrayMsg = []
-		while(temp.length > 0) {
-			let substr = temp.substr(0, 45)
-			temp = temp.substring(45)
-			arrayMsg.push(substr)
-		}
-		for(let i = 0; i < arrayMsg.length; i++) {
-			let dot = `${i + 1}/${arrayMsg.length}`
-			arrayMsg[i] = `${dot} ${arrayMsg[i]}`
-		}
-		return arrayMsg
-	}
-
-	onCheckValidate(value) {
-		return new Promise((resolve, reject) => {
-			switch(true) {
-				case value.length >= 50:
-					let spaceLength = value.match(/\s/g)
-					if(spaceLength == null) {
-						reject({key: 'max_length', msg: 'max legnth'})
-					}
-					else {
-						let arrayMsg = this.splitMessage(value)
-						let isValid = true
-						arrayMsg.forEach(msg => {
-							let count = this.countSpace(msg)
-							if(!msg) {
-								isValid = false
-							}
-						})
-						if(!isValid) {
-							reject({key: 'max_length_sub', msg: 'max legnth'})
-						}
-						else {
-							resolve(arrayMsg)
-						}
-					}
-				break
-				default:
-					if(value == '') {
-						reject('')
-					}
-					else {
-						resolve([value])
-					}
-				break
-			}
-		})
-	}
-
-	checkExistElement(element) {
-		return (typeof element !== 'undefined' && element !== null)
-	}
-
 	toggleTooltip(isShow = false) {
-		let footer = this.getPartItem('footer'), 
+		let footer = super.getPartItem(this.id, 'footer'), 
 			submitButton = footer.getElementsByClassName("button")[0], 
 			tooltip = ''
-		if(this.checkExistElement(submitButton)) {
+		if(super.checkExistElement(submitButton)) {
 			if(!isShow) {
 				tooltip = submitButton.getElementsByClassName('tooltip')[0]
-				if(this.checkExistElement(tooltip)) {
+				if(super.checkExistElement(tooltip)) {
 					tooltip.parentNode.removeChild(tooltip)
 				}
 			}
@@ -165,11 +84,11 @@ class FormBuild {
 		this.handlePreventAction()
 		.then(() => {
 			let { value } = document.getElementById(this.inputId)
-			this.onCheckValidate(value)
+			super.onCheckValidate(value, this.validate)
 			.then((messages) => {
 				messages.forEach(msg => {
 					let li = document.createElement('li'), 
-					list = this.getPartItem('list')
+					list = super.getPartItem(this.id, 'list')
 					li.append(msg)
 					list.appendChild(li)
 				})
