@@ -47,7 +47,7 @@ class FormBuild {
 			input.innerHTML = `<input type="text" class="form-control" id="${this.inputId}" placeholder="Enter message..."/>`
 
 			submitButton.className = 'button'
-			submitButton.innerHTML = `<button class="submit active" id="${this.submitId}">send</button>`
+			submitButton.innerHTML = `<button class="submit" id="${this.submitId}">send</button>`
 
 		return new Promise((resolve, reject) => {
 			footer.appendChild(input)
@@ -176,11 +176,13 @@ class FormBuild {
 				document.getElementById(this.inputId).value = ''
 				this.handlePreventAction(true)
 			}, err => {
-				this.toggleTooltip(true)
-				setTimeout(() => {
-					this.toggleTooltip(false)
-					this.handlePreventAction(true)
-				}, 3000)
+				if(err) {
+					this.toggleTooltip(true)
+					setTimeout(() => {
+						this.toggleTooltip(false)
+						this.handlePreventAction(true)
+					}, 3000)
+				}
 			})
 		})
 	}
@@ -189,6 +191,16 @@ class FormBuild {
 		event.preventDefault();
 	    if (event.keyCode === 13) {
 	        this.onClickSubmit()
+	    }
+	    else {
+	    	let { value } = event.target
+	    	let submitButton = document.getElementById(this.submitId)
+	    	if(value && value != '') {
+	    		submitButton.classList.add('active')
+	    	}
+	    	else {
+	    		submitButton.classList.remove('active')
+	    	}
 	    }
 	}
 

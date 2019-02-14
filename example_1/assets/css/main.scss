@@ -49,7 +49,7 @@ body {
 }
 .form {
 	display: block;
-	width: 400px;
+	width: 600px;
 	background-color: white;
 	margin: 10% auto;
 	box-shadow: 5px 5px 0px rgba(white,.2),
@@ -73,6 +73,11 @@ body {
 				position: absolute;
 				top: calc(100% + 0px);
 				right: 0px;
+				// transition: .5s;
+				animation: flat 2s;
+			}
+			&:focus {
+				outline: none;
 			}
 		}
 		.submit {
@@ -96,4 +101,9 @@ body {
 			}
 		}
 	}
+}
+
+@keyframes flat {
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
