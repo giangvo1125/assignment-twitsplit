@@ -1,4 +1,5 @@
 class Helper {
+	//splitMessage: function handle cut message into multi messages
 	splitMessage(string) {
 		let temp = string, arrayMsg = []
 		while(temp.length > 0) {
@@ -14,7 +15,7 @@ class Helper {
 		}
 		return arrayMsg
 	}
-
+	//countSpace: function boolean that cound space on message
 	countSpace(string = '', minChar) {
 		let count = string.match(/\s/g) ? string.match(/\s/g).length : null, 
 			stringLength = string.length
@@ -23,7 +24,7 @@ class Helper {
 		}
 		return true
 	}
-
+	//onCheckValidate: function check message with some condition
 	onCheckValidate(value, condition) {
 		return new Promise((resolve, reject) => {
 			switch(true) {
@@ -59,11 +60,11 @@ class Helper {
 			}
 		})
 	}
-
+	//checkExistElement: function boolean check is element existed
 	checkExistElement(element) {
 		return (typeof element !== 'undefined' && element !== null)
 	}
-
+	//getPartItem: function get dom for path
 	getPartItem(id, path) {
 		let form = document.getElementById(id), 
 			body = form.getElementsByClassName("form__body")[0], 
@@ -84,5 +85,3 @@ class Helper {
 		}
 	}
 }
-
-// module.exports = Helper

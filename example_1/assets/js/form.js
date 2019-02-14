@@ -10,7 +10,7 @@ class FormBuild extends Helper {
 		}
 		this.isLoadingSubmit = false
 	}
-
+	//handlePreventAction: function block action when another action call
 	handlePreventAction(isSetDefault = false) {
 		if(!isSetDefault) {
 			return new Promise((resolve, reject) => {
@@ -24,8 +24,8 @@ class FormBuild extends Helper {
 			this.isLoadingSubmit = false
 		}
 	}
-
-	generateBody() {
+	//generateBodyPart: function render a part of body form
+	generateBodyPart() {
 		let form = document.getElementById(this.id),
 			body = document.createElement('div'),
 			footer = document.createElement('div')
@@ -40,8 +40,8 @@ class FormBuild extends Helper {
 			resolve()
 		})
 	}
-
-	generateInputChat() {
+	//generateInputPart: function render a part of input and submit button
+	generateInputPart() {
 		let footer = super.getPartItem(this.id, 'footer'), 
 			input = document.createElement('div'), 
 			submitButton = document.createElement('div')
@@ -58,7 +58,7 @@ class FormBuild extends Helper {
 			resolve()
 		})
 	}
-
+	//toggleTooltip: function handle toggle display error tooltip
 	toggleTooltip(isShow = false) {
 		let footer = super.getPartItem(this.id, 'footer'), 
 			submitButton = footer.getElementsByClassName("button")[0], 
@@ -79,7 +79,7 @@ class FormBuild extends Helper {
 		}
 
 	}
-
+	//onClickSubmit: function handle when click submit button
 	onClickSubmit() {
 		return new Promise((resolve, reject) => {
 			this.handlePreventAction()
@@ -109,7 +109,7 @@ class FormBuild extends Helper {
 			})
 		})
 	}
-
+	//onEnterInput: function handle when enter on input
 	onEnterInput(event) {
 		event.preventDefault();
 	    if (event.keyCode === 13) {
@@ -126,13 +126,13 @@ class FormBuild extends Helper {
 	    	}
 	    }
 	}
-
+	//init: function create form for use
 	init() {
 		try {
 			return new Promise((resolve, reject) => {
-				this.generateBody()
+				this.generateBodyPart()
 				.then(() => {
-					return this.generateInputChat()
+					return this.generateInputPart()
 				})
 				.then(() => {
 					let submitBtn = document.getElementById(this.submitId)
@@ -150,5 +150,3 @@ class FormBuild extends Helper {
 		}
 	}
 }
-
-// module.exports = FormBuild
